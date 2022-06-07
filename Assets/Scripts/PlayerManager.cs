@@ -4,21 +4,38 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-
-
-    // Start is called before the first frame update
-    void Start()
+    bool isAtSight;
+    bool splashDown = true;
+    Rigidbody2D playerRb;
+    [SerializeField] float jumpForce;
+     
+    private void Awake()
     {
-        
+        playerRb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKey(KeyCode.Space) && isAtSight && splashDown)
         {
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            playerRb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            splashDown = false;
         }
     }
+
+    private void OnBecameInvisible()
+    {
+        isAtSight = false;
+    }
+
+    private void OnBecameVisible()
+    {
+        isAtSight = true;
+    }
+
+    public void SetSplashdown(bool splashDown)
+    {
+        this.splashDown = splashDown;
+    }
+    
 }
