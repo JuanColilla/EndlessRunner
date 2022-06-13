@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    int childs = 0;
+
     void Start()
     {
-
+        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-2, 0);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (gameObject.transform.position.x < -15)
+        {
+            Destroy(gameObject);
+            
+        }
 
+        if (gameObject.transform.position.x < 0 && childs == 0)
+        {
+            GameObject.Find("PlatformOrigin").GetComponent<PlatformOrigin>().CreateNewPlatform();
+            childs++;
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject.Find(collision.gameObject.name).GetComponent<PlayerManager>().SetSplashdown(true);
     }
+    
 }
